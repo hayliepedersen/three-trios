@@ -21,13 +21,13 @@ import cs3500.threetrios.model.ReadOnlyTriosModel;
 /**
  * A grid panel that represents the grid in the GUI.
  */
-public class GridPanel extends AbstractGamePanel implements ViewDecoartor {
+public class GridPanel extends AbstractGamePanel implements ViewDecorator {
   private final int cellSize;
   private final ReadOnlyTriosModel model;
   private ViewFeatures viewFeatures;
-
-  // TODO: find a way to pass the playerPanel selected card in here
   private final Card selectedCard;
+  private boolean hintsEnabledRed;
+  private boolean hintsEnabledBlue;
 
   /**
    * Constructor for GridPanel that handles MouseClicks.
@@ -39,9 +39,10 @@ public class GridPanel extends AbstractGamePanel implements ViewDecoartor {
     int cols = model.getGridCopy()[0].length;
     this.cellSize = 550 / rows;
     this.model = model;
-
-    // this is for testing purposes only
-    this.selectedCard = new CardModel("BENE", "A", "A", "A", "A");
+    // Placeholder Card
+    this.selectedCard = new CardModel("N/A", "A", "A", "A", "A");
+    this.hintsEnabledBlue = false;
+    this.hintsEnabledRed = false;
 
     MouseClick mouseListener = new MouseClick();
     this.addMouseListener(mouseListener);
@@ -91,15 +92,15 @@ public class GridPanel extends AbstractGamePanel implements ViewDecoartor {
           g2d.setColor(Color.BLACK);
           g2d.drawRect(x, y, cellSize, cellSize);
 
-          // TODO: is this allowed with the decorator pattern or do we need to implement a class instead
-          this.showHints(row, col, model, selectedCard, x, y, g2d);
+          // TODO: Is this allowed, aligns with "proper design"?
+          this.showHints(row, col, selectedCard, x, y, g2d);
         }
       }
     }
   }
 
   @Override
-  public void showHints(int row, int col, ReadOnlyTriosModel model,
+  public void showHints(int row, int col,
                         Card selectedCard, int x, int y, Graphics2D g2d) {
     Cell cell = model.getGridCopy()[row][col];
 
@@ -108,6 +109,15 @@ public class GridPanel extends AbstractGamePanel implements ViewDecoartor {
       int numFlips = model.numOfFlippableCards(row, col, selectedCard);
       g2d.drawString(Integer.toString(numFlips),
               x + cellSize / 10, (int) (y + cellSize * 0.9));
+    }
+  }
+
+  @Override
+  public void showHintsVisibility(boolean blueEnabled, boolean redEnabled) {
+    if (blueEnabled) {
+      hintsEnabledBlue = true;
+    } else if (redEnabled) {
+      hintsEnabledRed = true;
     }
   }
 

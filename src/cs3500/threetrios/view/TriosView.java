@@ -3,6 +3,7 @@ package cs3500.threetrios.view;
 import java.io.IOException;
 
 import cs3500.threetrios.controller.ViewFeatures;
+import cs3500.threetrios.model.Player;
 
 /**
  * To represent the view of the Three Trios model.
@@ -36,9 +37,7 @@ public interface TriosView {
   void showMessage(String message);
 
   /**
-   * Set's the players title depending on which player's panel it is.
-   *
-   * @param string the player to display
+   * Allows for hints to be enabled at runtime. Enables hints only for that player's view.
    */
-  void setPlayerTitle(String string);
+  void toggleHints();
 }

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ThreeTrios">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/docs/configurations/ThreeTrios.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

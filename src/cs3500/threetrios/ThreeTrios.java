@@ -66,10 +66,12 @@ public final class ThreeTrios {
     String player1Type = args[0];
     String player2Type = args[1];
 
-    ThreeTriosGraphicsView viewPlayer1 = new ThreeTriosGraphicsView(model);
-    viewPlayer1.setPlayerTitle("Red Side: ");
-    ThreeTriosGraphicsView viewPlayer2 = new ThreeTriosGraphicsView(model);
-    viewPlayer2.setPlayerTitle("Blue Side: ");
+    ThreeTriosGraphicsView viewPlayer1 = new ThreeTriosGraphicsView(model, Player.RED);
+    ThreeTriosGraphicsView viewPlayer2 = new ThreeTriosGraphicsView(model, Player.BLUE);
+
+    // Extra Credit Section
+    viewPlayer1.toggleHints();
+    // viewPlayer2.toggleHints();
 
     AnyPlayer player1 = configurePlayer(player1Type, model, Player.RED);
     AnyPlayer player2 = configurePlayer(player2Type, model, Player.BLUE);

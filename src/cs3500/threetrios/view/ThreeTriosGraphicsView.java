@@ -20,17 +20,18 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   private final JPanel redPlayerPanel;
   private final JPanel bluePlayerPanel;
   private final ReadOnlyTriosModel model;
-  private String playerTitle;
+  private final Player player;
+  private boolean blueEnabled;
+  private boolean redEnabled;
 
   /**
    * Sets up the GUI for a game of ThreeTrios.
    *
    * @param model the model to read game data from
    */
-  public ThreeTriosGraphicsView(ReadOnlyTriosModel model) {
+  public ThreeTriosGraphicsView(ReadOnlyTriosModel model, Player player) {
     super();
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.playerTitle = "";
     this.model = model;
 
     int rows = model.getGridCopy().length;
@@ -41,8 +42,14 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
 
     JPanel mainPanel = new JPanel(new FlowLayout());
 
-    this.gridPanel = new GridPanel(model);
+    this.player = player;
+    this.blueEnabled = false;
+    this.redEnabled = false;
+
+    GridPanel grid = new GridPanel(model);
+    this.gridPanel = grid;
     gridPanel.setSize(new Dimension(600, 600));
+    grid.showHintsVisibility(this.blueEnabled, this.redEnabled);
     this.redPlayerPanel = new PlayerPanel(Player.RED, model);
     redPlayerPanel.setSize(new Dimension(100, 600));
     this.bluePlayerPanel = new PlayerPanel(Player.BLUE, model);
@@ -57,7 +64,8 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
 
   @Override
   public void render() throws IOException {
-    setTitle(playerTitle + "Current Player is " + model.getCurrentPlayer());
+    setTitle(this.player.getAsString() + " Side: " + "Current Player is "
+            + model.getCurrentPlayer());
 
     this.repaint();
   }
@@ -66,7 +74,8 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   public void makeVisible() {
     this.setVisible(true);
 
-    setTitle(playerTitle + "Current Player is " + model.getCurrentPlayer());
+    setTitle(this.player.getAsString() + " Side: " + "Current Player is "
+            + model.getCurrentPlayer());
   }
 
   @Override
@@ -86,7 +95,11 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   }
 
   @Override
-  public void setPlayerTitle(String string) {
-    this.playerTitle = string;
+  public void toggleHints() {
+    if (this.player == Player.RED) {
+      redEnabled = true;
+    } else if (this.player == Player.BLUE) {
+      blueEnabled = true;
+    }
   }
 }
