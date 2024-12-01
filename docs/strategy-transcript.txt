@@ -1,0 +1,15 @@
+Starting Board Configuration:
+- 3x3 grid, all cells are empty.
+- No holes in the board.
+- Red player's turn to move.
+
+Highest Flip Num Steps:
+1. The simplest strategy checks the available cells in the board.
+2. Since the board is empty, all cells are open for play.
+3. According to the HighestFlipNum strategy, Red will look for which of their cards will flip the
+most cards on the board at any legal position (open and not a hole).
+4. Since all cells are open and there are no holes, the default move will occur and Red will play
+to (0, 0) with their first card in hand.
+
+Mock Relation:
+- These steps mirror what occurs in the DefaultTriosMock.
