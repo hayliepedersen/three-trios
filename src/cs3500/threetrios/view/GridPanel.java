@@ -12,6 +12,7 @@ import java.io.IOException;
 import cs3500.threetrios.controller.ViewFeatures;
 import cs3500.threetrios.model.Card;
 import cs3500.threetrios.model.CardCell;
+import cs3500.threetrios.model.CardModel;
 import cs3500.threetrios.model.Cell;
 import cs3500.threetrios.model.Hole;
 import cs3500.threetrios.model.Player;
@@ -20,10 +21,13 @@ import cs3500.threetrios.model.ReadOnlyTriosModel;
 /**
  * A grid panel that represents the grid in the GUI.
  */
-public class GridPanel extends AbstractGamePanel {
+public class GridPanel extends AbstractGamePanel implements ViewDecoartor {
   private final int cellSize;
   private final ReadOnlyTriosModel model;
   private ViewFeatures viewFeatures;
+
+  // TODO: find a way to pass the playerPanel selected card in here
+  private final Card selectedCard;
 
   /**
    * Constructor for GridPanel that handles MouseClicks.
@@ -35,6 +39,9 @@ public class GridPanel extends AbstractGamePanel {
     int cols = model.getGridCopy()[0].length;
     this.cellSize = 550 / rows;
     this.model = model;
+
+    // this is for testing purposes only
+    this.selectedCard = new CardModel("BENE", "A", "A", "A", "A");
 
     MouseClick mouseListener = new MouseClick();
     this.addMouseListener(mouseListener);
@@ -79,11 +86,28 @@ public class GridPanel extends AbstractGamePanel {
           else {
             g2d.setColor(Color.YELLOW);
           }
+
           g2d.fillRect(x, y, cellSize, cellSize);
           g2d.setColor(Color.BLACK);
           g2d.drawRect(x, y, cellSize, cellSize);
+
+          // TODO: is this allowed with the decorator pattern or do we need to implement a class instead
+          this.showHints(row, col, model, selectedCard, x, y, g2d);
         }
       }
+    }
+  }
+
+  @Override
+  public void showHints(int row, int col, ReadOnlyTriosModel model,
+                        Card selectedCard, int x, int y, Graphics2D g2d) {
+    Cell cell = model.getGridCopy()[row][col];
+
+    if (cell instanceof CardCell) {
+      g2d.setColor(Color.BLACK);
+      int numFlips = model.numOfFlippableCards(row, col, selectedCard);
+      g2d.drawString(Integer.toString(numFlips),
+              x + cellSize / 10, (int) (y + cellSize * 0.9));
     }
   }
 
