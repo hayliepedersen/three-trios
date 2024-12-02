@@ -125,9 +125,6 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
     } else if (redEnabled) {
       hintsEnabledRed = true;
     }
-
-    System.out.println("BLUE: " + hintsEnabledBlue);
-    System.out.println("RED: " + hintsEnabledRed);
   }
 
   @Override
