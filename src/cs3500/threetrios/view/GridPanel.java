@@ -25,7 +25,6 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
   private final int cellSize;
   private final ReadOnlyTriosModel model;
   private ViewFeatures viewFeatures;
-  private final Card selectedCard;
   private boolean hintsEnabledRed;
   private boolean hintsEnabledBlue;
 
@@ -39,8 +38,6 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
     int cols = model.getGridCopy()[0].length;
     this.cellSize = 550 / rows;
     this.model = model;
-    // Placeholder Card
-    this.selectedCard = new CardModel("N/A", "A", "A", "A", "A");
     this.hintsEnabledBlue = false;
     this.hintsEnabledRed = false;
 
@@ -92,21 +89,24 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
           g2d.setColor(Color.BLACK);
           g2d.drawRect(x, y, cellSize, cellSize);
 
-          // TODO: Is this allowed, aligns with "proper design"?
-          this.showHints(row, col, selectedCard, x, y, g2d);
+          // TODO: Is this "proper design"
+          this.showHints(row, col, x, y, g2d);
         }
       }
     }
   }
 
   @Override
-  public void showHints(int row, int col,
-                        Card selectedCard, int x, int y, Graphics2D g2d) {
+  public void showHints(int row, int col, int x, int y, Graphics2D g2d) {
+    if (viewFeatures.selectedCard() == null) {
+      return;
+    }
+
     Cell cell = model.getGridCopy()[row][col];
 
     if (cell instanceof CardCell) {
       g2d.setColor(Color.BLACK);
-      int numFlips = model.numOfFlippableCards(row, col, selectedCard);
+      int numFlips = model.numOfFlippableCards(row, col, viewFeatures.selectedCard());
       g2d.drawString(Integer.toString(numFlips),
               x + cellSize / 10, (int) (y + cellSize * 0.9));
     }

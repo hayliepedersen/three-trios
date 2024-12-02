@@ -138,12 +138,14 @@ public class PlayerPanel extends AbstractGamePanel {
             setSelectedCardIndex(index);
           }
           repaint();
+          viewFeatures.repaintGrid();
           return;
         }
       }
 
       index = -1;
       repaint();
+      viewFeatures.repaintGrid();
     }
 
     /**

@@ -92,6 +92,15 @@ public class TriosController implements ViewFeatures, ModelObservers {
   }
 
   @Override
+  public void repaintGrid() {
+    try {
+      view.render();
+    } catch (IOException ex) {
+      throw new IllegalStateException(ex);
+    }
+  }
+
+  @Override
   public void onGameOver(String winner, int winningScore) throws IOException {
     view.showMessage("Game Over! " + "The winner is " + winner + " with a score of "
             + winningScore);

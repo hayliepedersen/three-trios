@@ -12,12 +12,11 @@ public interface ViewDecorator {
    *
    * @param row the row index of each card on the grid
    * @param col the col index of each card on the grid
-   * @param selectedCard the card selected by the player
    * @param x the x coordinate
    * @param y the y coordinate
    * @param g2d the graphics to work with
    */
-  void showHints(int row, int col, Card selectedCard, int x, int y, Graphics2D g2d);
+  void showHints(int row, int col, int x, int y, Graphics2D g2d);
 
   /**
    * Shows the hints for the given player.

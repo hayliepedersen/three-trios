@@ -50,5 +50,10 @@ public interface ViewFeatures {
    * Allows for the machine player to make their turn.
    */
   void handleMachineTurnPlay() throws IOException;
+
+  /**
+   * Repaints the grid to show updates.
+   */
+  void repaintGrid();
 }
 
