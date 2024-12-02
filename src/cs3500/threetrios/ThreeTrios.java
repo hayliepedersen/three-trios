@@ -70,8 +70,8 @@ public final class ThreeTrios {
     ThreeTriosGraphicsView viewPlayer2 = new ThreeTriosGraphicsView(model, Player.BLUE);
 
     // Extra Credit Section
-    viewPlayer1.toggleHints();
-    // viewPlayer2.toggleHints();
+    viewPlayer1.enableHints();
+    // viewPlayer2.enableHints();
 
     AnyPlayer player1 = configurePlayer(player1Type, model, Player.RED);
     AnyPlayer player2 = configurePlayer(player2Type, model, Player.BLUE);

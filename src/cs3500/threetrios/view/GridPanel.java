@@ -24,6 +24,7 @@ import cs3500.threetrios.model.ReadOnlyTriosModel;
 public class GridPanel extends AbstractGamePanel implements ViewDecorator {
   private final int cellSize;
   private final ReadOnlyTriosModel model;
+  private final Player player;
   private ViewFeatures viewFeatures;
   private boolean hintsEnabledRed;
   private boolean hintsEnabledBlue;
@@ -33,13 +34,14 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
    *
    * @param model ReadOnlyTrioModel to build the GUI off of.
    */
-  public GridPanel(ReadOnlyTriosModel model) {
+  public GridPanel(ReadOnlyTriosModel model, Player player) {
     int rows = model.getGridCopy().length;
     int cols = model.getGridCopy()[0].length;
     this.cellSize = 550 / rows;
     this.model = model;
     this.hintsEnabledBlue = false;
     this.hintsEnabledRed = false;
+    this.player = player;
 
     MouseClick mouseListener = new MouseClick();
     this.addMouseListener(mouseListener);
@@ -89,8 +91,12 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
           g2d.setColor(Color.BLACK);
           g2d.drawRect(x, y, cellSize, cellSize);
 
-          // TODO: Is this "proper design"
-          this.showHints(row, col, x, y, g2d);
+          // TODO: Is this "proper design"?
+          if (this.player.equals(Player.RED) && hintsEnabledRed) {
+            this.showHints(row, col, x, y, g2d);
+          } else if (this.player.equals(Player.BLUE) && hintsEnabledBlue) {
+            this.showHints(row, col, x, y, g2d);
+          }
         }
       }
     }
@@ -119,6 +125,9 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
     } else if (redEnabled) {
       hintsEnabledRed = true;
     }
+
+    System.out.println("BLUE: " + hintsEnabledBlue);
+    System.out.println("RED: " + hintsEnabledRed);
   }
 
   @Override

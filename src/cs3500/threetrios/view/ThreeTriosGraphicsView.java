@@ -21,6 +21,7 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   private final JPanel bluePlayerPanel;
   private final ReadOnlyTriosModel model;
   private final Player player;
+  private final GridPanel grid;
   private boolean blueEnabled;
   private boolean redEnabled;
 
@@ -46,10 +47,9 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
     this.blueEnabled = false;
     this.redEnabled = false;
 
-    GridPanel grid = new GridPanel(model);
+    this.grid = new GridPanel(model, player);
     this.gridPanel = grid;
     gridPanel.setSize(new Dimension(600, 600));
-    grid.showHintsVisibility(this.blueEnabled, this.redEnabled);
     this.redPlayerPanel = new PlayerPanel(Player.RED, model);
     redPlayerPanel.setSize(new Dimension(100, 600));
     this.bluePlayerPanel = new PlayerPanel(Player.BLUE, model);
@@ -95,11 +95,13 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   }
 
   @Override
-  public void toggleHints() {
+  public void enableHints() {
     if (this.player == Player.RED) {
       redEnabled = true;
     } else if (this.player == Player.BLUE) {
       blueEnabled = true;
     }
+
+    grid.showHintsVisibility(this.blueEnabled, this.redEnabled);
   }
 }
