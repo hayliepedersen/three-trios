@@ -39,5 +39,5 @@ public interface TriosView {
   /**
    * Allows for hints to be enabled at runtime. Enables hints only for that player's view.
    */
-  void enableHints();
+  void toggleHints();
 }

@@ -12,7 +12,6 @@ import java.io.IOException;
 import cs3500.threetrios.controller.ViewFeatures;
 import cs3500.threetrios.model.Card;
 import cs3500.threetrios.model.CardCell;
-import cs3500.threetrios.model.CardModel;
 import cs3500.threetrios.model.Cell;
 import cs3500.threetrios.model.Hole;
 import cs3500.threetrios.model.Player;
@@ -22,11 +21,11 @@ import cs3500.threetrios.model.ReadOnlyTriosModel;
  * A grid panel that represents the grid in the GUI.
  */
 public class GridPanel extends AbstractGamePanel implements ViewDecorator {
-  private final int cellSize;
-  private final ReadOnlyTriosModel model;
-  private final Player player;
-  private ViewFeatures viewFeatures;
+  protected final int cellSize;
+  protected final ReadOnlyTriosModel model;
+  protected ViewFeatures viewFeatures;
   private boolean hintsEnabledRed;
+  private final Player player;
   private boolean hintsEnabledBlue;
 
   /**

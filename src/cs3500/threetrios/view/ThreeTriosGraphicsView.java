@@ -55,6 +55,9 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
     this.bluePlayerPanel = new PlayerPanel(Player.BLUE, model);
     bluePlayerPanel.setSize(new Dimension(100, 600));
 
+    // TODO: Is this the proper way to do the decorator stuff?
+    JPanel hintDecoratedGridPanel = new HintDecorator(model, player, grid);
+
     mainPanel.add(redPlayerPanel, FlowLayout.LEFT);
     mainPanel.add(gridPanel, FlowLayout.CENTER);
     mainPanel.add(bluePlayerPanel, FlowLayout.RIGHT);
@@ -95,11 +98,11 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   }
 
   @Override
-  public void enableHints() {
+  public void toggleHints() {
     if (this.player == Player.RED) {
-      redEnabled = true;
+      redEnabled = !redEnabled;
     } else if (this.player == Player.BLUE) {
-      blueEnabled = true;
+      blueEnabled = !blueEnabled;
     }
 
     grid.showHintsVisibility(this.blueEnabled, this.redEnabled);
