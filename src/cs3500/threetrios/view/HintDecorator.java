@@ -11,29 +11,49 @@ import cs3500.threetrios.model.Hole;
 import cs3500.threetrios.model.Player;
 import cs3500.threetrios.model.ReadOnlyTriosModel;
 
-// TODO: Needs to be fixed
+/**
+ * Represents a decorator for showing hints in the ThreeTrios game.
+ */
 public class HintDecorator extends GridPanel {
-  private boolean hintsEnabled;
   private final Player player;
+  private boolean hintsEnabledRed;
+  private boolean hintsEnabledBlue;
 
+  /**
+   * Constructs this hint decorator.
+   *
+   * @param model the model to display
+   * @param player the active player
+   * @param gridPanel the grid panel to decorate
+   */
   public HintDecorator(ReadOnlyTriosModel model, Player player, GridPanel gridPanel) {
-    super(model, player);
+    super(model);
     this.player = player;
-    this.hintsEnabled = false;
+
+    this.hintsEnabledBlue = false;
+    this.hintsEnabledRed = false;
+
+    MouseClick mouseListener = new MouseClick();
+    this.addMouseListener(mouseListener);
 
     this.setFocusable(true);
     this.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_H) { // Use 'H' to toggle hints
-          hintsEnabled = !hintsEnabled;
-          gridPanel.repaint(); // Trigger a repaint to update the UI
+        // Using 'H' to toggle hints
+        if (e.getKeyCode() == KeyEvent.VK_H && player.equals(Player.RED)) {
+          hintsEnabledRed = !hintsEnabledRed;
+          repaint();
+        } else if (e.getKeyCode() == KeyEvent.VK_H && player.equals(Player.BLUE)) {
+          hintsEnabledBlue = !hintsEnabledBlue;
+          repaint();
         }
       }
     });
   }
 
-  protected void paintComponent(Graphics g) {
+  @Override
+  public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
     Cell[][] grid = model.getGridCopy();
@@ -66,10 +86,9 @@ public class HintDecorator extends GridPanel {
           g2d.setColor(Color.BLACK);
           g2d.drawRect(x, y, cellSize, cellSize);
 
-          // TODO: Is this "proper design"?
-          if (this.player.equals(Player.RED) && hintsEnabled) {
+          if (hintsEnabledRed && this.player.equals(Player.RED)) {
             this.showHints(row, col, x, y, g2d);
-          } else if (this.player.equals(Player.BLUE) && hintsEnabled) {
+          } else if (hintsEnabledBlue && this.player.equals(Player.BLUE)) {
             this.showHints(row, col, x, y, g2d);
           }
         }
@@ -77,8 +96,7 @@ public class HintDecorator extends GridPanel {
     }
   }
 
-  @Override
-  public void showHints(int row, int col, int x, int y, Graphics2D g2d) {
+  private void showHints(int row, int col, int x, int y, Graphics2D g2d) {
     if (viewFeatures.selectedCard() == null) {
       return;
     }

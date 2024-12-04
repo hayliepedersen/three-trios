@@ -22,8 +22,7 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   private final ReadOnlyTriosModel model;
   private final Player player;
   private final GridPanel grid;
-  private boolean blueEnabled;
-  private boolean redEnabled;
+  private final HintDecorator hintDecoratedPanel;
 
   /**
    * Sets up the GUI for a game of ThreeTrios.
@@ -44,10 +43,8 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
     JPanel mainPanel = new JPanel(new FlowLayout());
 
     this.player = player;
-    this.blueEnabled = false;
-    this.redEnabled = false;
 
-    this.grid = new GridPanel(model, player);
+    this.grid = new GridPanel(model);
     this.gridPanel = grid;
     gridPanel.setSize(new Dimension(600, 600));
     this.redPlayerPanel = new PlayerPanel(Player.RED, model);
@@ -55,11 +52,10 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
     this.bluePlayerPanel = new PlayerPanel(Player.BLUE, model);
     bluePlayerPanel.setSize(new Dimension(100, 600));
 
-    // TODO: Is this the proper way to do the decorator stuff?
-    JPanel hintDecoratedGridPanel = new HintDecorator(model, player, grid);
+    hintDecoratedPanel = new HintDecorator(model, player, grid);
 
     mainPanel.add(redPlayerPanel, FlowLayout.LEFT);
-    mainPanel.add(gridPanel, FlowLayout.CENTER);
+    mainPanel.add(hintDecoratedPanel, FlowLayout.CENTER);
     mainPanel.add(bluePlayerPanel, FlowLayout.RIGHT);
 
     this.add(mainPanel);
@@ -83,8 +79,8 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
 
   @Override
   public void addFeatures(ViewFeatures viewFeatures) {
-    GridPanel grid = (GridPanel) this.gridPanel;
     grid.setFeatures(viewFeatures);
+    hintDecoratedPanel.setFeatures(viewFeatures);
     PlayerPanel redPlayer = (PlayerPanel) this.redPlayerPanel;
     redPlayer.setFeatures(viewFeatures);
     PlayerPanel bluePlayer = (PlayerPanel) this.bluePlayerPanel;
@@ -95,16 +91,5 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
   public void showMessage(String message) {
     JOptionPane.showMessageDialog(this, message,
             "Over!", JOptionPane.PLAIN_MESSAGE);
-  }
-
-  @Override
-  public void toggleHints() {
-    if (this.player == Player.RED) {
-      redEnabled = !redEnabled;
-    } else if (this.player == Player.BLUE) {
-      blueEnabled = !blueEnabled;
-    }
-
-    grid.showHintsVisibility(this.blueEnabled, this.redEnabled);
   }
 }

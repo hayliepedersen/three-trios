@@ -35,9 +35,4 @@ public interface TriosView {
    * @param message the message to display
    */
   void showMessage(String message);
-
-  /**
-   * Allows for hints to be enabled at runtime. Enables hints only for that player's view.
-   */
-  void toggleHints();
 }

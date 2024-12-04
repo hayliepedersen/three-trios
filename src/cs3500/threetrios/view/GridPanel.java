@@ -20,27 +20,21 @@ import cs3500.threetrios.model.ReadOnlyTriosModel;
 /**
  * A grid panel that represents the grid in the GUI.
  */
-public class GridPanel extends AbstractGamePanel implements ViewDecorator {
+public class GridPanel extends AbstractGamePanel {
   protected final int cellSize;
   protected final ReadOnlyTriosModel model;
   protected ViewFeatures viewFeatures;
-  private boolean hintsEnabledRed;
-  private final Player player;
-  private boolean hintsEnabledBlue;
 
   /**
    * Constructor for GridPanel that handles MouseClicks.
    *
    * @param model ReadOnlyTrioModel to build the GUI off of.
    */
-  public GridPanel(ReadOnlyTriosModel model, Player player) {
+  public GridPanel(ReadOnlyTriosModel model) {
     int rows = model.getGridCopy().length;
     int cols = model.getGridCopy()[0].length;
     this.cellSize = 550 / rows;
     this.model = model;
-    this.hintsEnabledBlue = false;
-    this.hintsEnabledRed = false;
-    this.player = player;
 
     MouseClick mouseListener = new MouseClick();
     this.addMouseListener(mouseListener);
@@ -89,40 +83,8 @@ public class GridPanel extends AbstractGamePanel implements ViewDecorator {
           g2d.fillRect(x, y, cellSize, cellSize);
           g2d.setColor(Color.BLACK);
           g2d.drawRect(x, y, cellSize, cellSize);
-
-          // TODO: Is this "proper design"?
-          if (this.player.equals(Player.RED) && hintsEnabledRed) {
-            this.showHints(row, col, x, y, g2d);
-          } else if (this.player.equals(Player.BLUE) && hintsEnabledBlue) {
-            this.showHints(row, col, x, y, g2d);
-          }
         }
       }
-    }
-  }
-
-  @Override
-  public void showHints(int row, int col, int x, int y, Graphics2D g2d) {
-    if (viewFeatures.selectedCard() == null) {
-      return;
-    }
-
-    Cell cell = model.getGridCopy()[row][col];
-
-    if (cell instanceof CardCell) {
-      g2d.setColor(Color.BLACK);
-      int numFlips = model.numOfFlippableCards(row, col, viewFeatures.selectedCard());
-      g2d.drawString(Integer.toString(numFlips),
-              x + cellSize / 10, (int) (y + cellSize * 0.9));
-    }
-  }
-
-  @Override
-  public void showHintsVisibility(boolean blueEnabled, boolean redEnabled) {
-    if (blueEnabled) {
-      hintsEnabledBlue = true;
-    } else if (redEnabled) {
-      hintsEnabledRed = true;
     }
   }
 
