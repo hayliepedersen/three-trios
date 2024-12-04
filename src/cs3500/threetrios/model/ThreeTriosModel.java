@@ -16,17 +16,17 @@ import cs3500.threetrios.controller.ModelObservers;
  * a game of Three Trios.
  */
 public class ThreeTriosModel implements TriosModel {
-  private final int rows;
-  private final int cols;
-  private final Cell[][] grid;
-  private final int cellCount;
-  private final List<Card> deck;
-  private final List<Card> redHand;
-  private final List<Card> blueHand;
+  protected int rows;
+  protected int cols;
+  protected Cell[][] grid;
+  protected int cellCount;
+  protected List<Card> deck;
+  protected List<Card> redHand;
+  protected List<Card> blueHand;
   protected Player currentPlayer;
-  private final Random random;
-  private boolean isStarted;
-  protected final List<ModelObservers> modelObservers;
+  protected Random random;
+  protected boolean isStarted;
+  protected List<ModelObservers> modelObservers;
 
   /**
    * Initializes the game by setting up the start of game functionality.
@@ -105,7 +105,7 @@ public class ThreeTriosModel implements TriosModel {
    * @param grid the Cell[][] that represents a grid
    * @return the number of card cells present
    */
-  private int countCardCells(Cell[][] grid) {
+  protected int countCardCells(Cell[][] grid) {
     int cellCount = 0;
     for (int rowCount = 0; rowCount < grid.length; rowCount++) {
       for (int colCount = 0; colCount < grid[0].length; colCount++) {
@@ -126,7 +126,7 @@ public class ThreeTriosModel implements TriosModel {
    * <p>Each player’s hand is filled with exactly (N+1)/2 cards where
    * N is the number of card cells on the grid.</p>
    */
-  private void dealHands() {
+  protected void dealHands() {
     Collections.shuffle(this.deck, this.random);
 
     for (int deckIdx = 0; deckIdx < (cellCount + 1) / 2; deckIdx++) {
@@ -141,7 +141,7 @@ public class ThreeTriosModel implements TriosModel {
    * @throws IllegalStateException if there is an invalid card owner or all grid cells are not
    *                               either card cells or holes
    */
-  private void ensureGridCells() {
+  protected void ensureGridCells() {
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         Cell cell = grid[row][col];
@@ -192,6 +192,21 @@ public class ThreeTriosModel implements TriosModel {
 
     // Perform battle phase after placing the card
     battlePhase(row, col, card);
+
+    currentPlayer = (currentPlayer == Player.RED) ? Player.BLUE : Player.RED;
+
+    endTurn();
+    if (isGameOver()) {
+      determineWinner();
+    }
+
+    try {
+      for (ModelObservers observers : this.modelObservers) {
+        observers.onTurnChanged();
+      }
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
   }
 
   /**
@@ -230,21 +245,6 @@ public class ThreeTriosModel implements TriosModel {
         }
       }
       flippedCards = newlyFlippedCards;
-    }
-
-    currentPlayer = (currentPlayer == Player.RED) ? Player.BLUE : Player.RED;
-
-    endTurn();
-    if (isGameOver()) {
-      determineWinner();
-    }
-
-    try {
-      for (ModelObservers observers : this.modelObservers) {
-        observers.onTurnChanged();
-      }
-    } catch (IOException ex) {
-      ex.printStackTrace();
     }
   }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import cs3500.threetrios.controller.ModelObservers;
 
@@ -27,9 +28,71 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
 
     this.reverse = reverse;
     this.fallenAce = fallenAce;
+
+    this.cellCount = this.countCardCells(grid);
+
+    if (this.cellCount % 2 == 0) {
+      throw new IllegalArgumentException("Grid must have an odd number of card cells.");
+    }
+
+    this.redHand = new ArrayList<>();
+    this.blueHand = new ArrayList<>();
+    this.modelObservers = new ArrayList<>();
+
+    this.rows = grid.length;
+    this.cols = grid[0].length;
+    this.grid = grid;
+    this.deck = new ArrayList<>(deck);
+    this.isStarted = false;
+
+    if (deck.size() < this.cellCount + 1) {
+      throw new IllegalArgumentException("Not enough cards to start the game.");
+    }
+
+    this.random = new Random();
+
+    dealHands();
+
+    ensureGridCells();
   }
 
-  // TODO: Once functionality is work, do abstraction between this model and original model
+  /**
+   * Constructs a variant model with a random seed for testing.
+   *
+   * @param grid the grid to initialize with
+   * @param deck the deck to initialize with
+   */
+  public VariantOneModel(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
+                         Random random) {
+    super(grid, deck);
+
+    this.reverse = reverse;
+    this.fallenAce = fallenAce;
+
+    this.cellCount = this.countCardCells(grid);
+
+    this.redHand = new ArrayList<>();
+    this.blueHand = new ArrayList<>();
+    this.modelObservers = new ArrayList<>();
+
+    this.rows = grid.length;
+    this.cols = grid[0].length;
+    this.grid = grid;
+    this.deck = new ArrayList<>(deck);
+
+    if (deck.size() < this.cellCount + 1) {
+      throw new IllegalArgumentException("Not enough cards to start the game.");
+    }
+
+    this.random = random;
+
+    dealHands();
+
+    ensureGridCells();
+  }
+
+  // TODO: Once functionality is work, do abstraction between this model and original model,
+  // including constructor, move stuff to startGame()
 
   /**
    * Handles the battle phase logic for a player's turn.
@@ -50,8 +113,10 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
       battlePhaseReverse(row, col, card);
     } else if (this.fallenAce && !this.reverse) {
       // Play with only fallen ace rule applied
+      battlePhaseReverse(row, col, card);
     } else if (this.reverse) {
       // Play with both rules applied
+      battlePhaseReverse(row, col, card);
     }
 
   }
@@ -92,21 +157,6 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
         }
       }
       flippedCards = newlyFlippedCards;
-    }
-
-    currentPlayer = (currentPlayer == Player.RED) ? Player.BLUE : Player.RED;
-
-    endTurn();
-    if (isGameOver()) {
-      determineWinner();
-    }
-
-    try {
-      for (ModelObservers observers : this.modelObservers) {
-        observers.onTurnChanged();
-      }
-    } catch (IOException ex) {
-      ex.printStackTrace();
     }
   }
 

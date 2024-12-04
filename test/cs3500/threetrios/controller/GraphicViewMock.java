@@ -27,9 +27,4 @@ public class GraphicViewMock implements TriosView {
   public void showMessage(String message) {
     // not currently necessary
   }
-
-  @Override
-  public void setPlayerTitle(String string) {
-    // not currently necessary
-  }
 }
