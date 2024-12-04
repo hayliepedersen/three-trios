@@ -23,10 +23,10 @@ public class ThreeTriosModel implements TriosModel {
   private final List<Card> deck;
   private final List<Card> redHand;
   private final List<Card> blueHand;
-  private Player currentPlayer;
+  protected Player currentPlayer;
   private final Random random;
   private boolean isStarted;
-  private final List<ModelObservers> modelObservers;
+  protected final List<ModelObservers> modelObservers;
 
   /**
    * Initializes the game by setting up the start of game functionality.
@@ -206,7 +206,7 @@ public class ThreeTriosModel implements TriosModel {
    * @param col  the column of the placed card, 0-based index
    * @param card the placed card
    */
-  private void battlePhase(int row, int col, Card card) throws IOException {
+  protected void battlePhase(int row, int col, Card card) throws IOException {
     List<int[]> flippedCards = new ArrayList<>();
     // Starting with the initially placed card
     flippedCards.add(new int[]{row, col});
@@ -257,7 +257,7 @@ public class ThreeTriosModel implements TriosModel {
    * @return an array where index 0 is the placed card's value and index 1 is the adjacent card's
    *     value
    */
-  private int[] getBattleValues(int directionIndex, HashMap<String, Integer> placedCardDirections,
+  protected int[] getBattleValues(int directionIndex, HashMap<String, Integer> placedCardDirections,
                                 HashMap<String, Integer> adjacentCardDirections) {
     switch (directionIndex) {
       case 0:  // North
@@ -332,7 +332,7 @@ public class ThreeTriosModel implements TriosModel {
    * @param directionIndex the direction of the position
    * @return the adjacent row and column
    */
-  private int[] getAdjacentPosition(int row, int col, int directionIndex) {
+  protected int[] getAdjacentPosition(int row, int col, int directionIndex) {
     int[][] directions = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};  // North, South, East, West
     return new int[]{row + directions[directionIndex][0], col + directions[directionIndex][1]};
   }
@@ -380,7 +380,7 @@ public class ThreeTriosModel implements TriosModel {
    * @param col the column to check
    * @return true if the position is valid, false otherwise
    */
-  private boolean isValidPosition(int row, int col) {
+  protected boolean isValidPosition(int row, int col) {
     return row >= 0 && row < rows && col >= 0 && col < cols;
   }
 
@@ -390,7 +390,7 @@ public class ThreeTriosModel implements TriosModel {
    * @param row the row of the card to flip
    * @param col the column of the card to flip
    */
-  private void flipCard(int row, int col) {
+  protected void flipCard(int row, int col) {
     Card cardToFlip = getCardAt(row, col);
     cardToFlip.setCardOwner(currentPlayer);
   }
@@ -402,7 +402,7 @@ public class ThreeTriosModel implements TriosModel {
    * @param col the column of the desired card
    * @return the Card at the specified position, or null if no card is present
    */
-  private Card getCardAt(int row, int col) {
+  protected Card getCardAt(int row, int col) {
     Cell cell = grid[row][col];
     Card card = null;
 
