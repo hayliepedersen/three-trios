@@ -26,7 +26,7 @@ public class HintDecorator extends GridPanel {
    * @param player the active player
    * @param gridPanel the grid panel to decorate
    */
-  public HintDecorator(ReadOnlyTriosModel model, Player player, GridPanel gridPanel) {
+  public HintDecorator(ReadOnlyTriosModel model, Player player) {
     super(model);
     this.player = player;
 

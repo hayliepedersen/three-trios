@@ -178,3 +178,17 @@ the controller to the view
 ### `ThreeTrios` 
 - updated main to have two views, two controllers, and two players that are configured based off
 of the new `configurePlayer()` method which sets up players based off of command-line arguments.
+
+# Extra Credit Notes
+
+### Level 0
+
+To enable hints, a player can hit the 'H' key on their turn, and press again to disable.
+
+To play the game without the possibility of hints, one can modify the following section of the
+`ThreeTriosGraphicView` constructor, to use the typical `gridPanel` 
+instead of the `hintDecoratedPanel`.
+````java
+mainPanel.add(redPlayerPanel, FlowLayout.LEFT);
+mainPanel.add(hintDecoratedPanel, FlowLayout.CENTER);
+mainPanel.add(bluePlayerPanel, FlowLayout.RIGHT);

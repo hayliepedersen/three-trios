@@ -52,7 +52,7 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
     this.bluePlayerPanel = new PlayerPanel(Player.BLUE, model);
     bluePlayerPanel.setSize(new Dimension(100, 600));
 
-    hintDecoratedPanel = new HintDecorator(model, player, grid);
+    hintDecoratedPanel = new HintDecorator(model, player);
 
     mainPanel.add(redPlayerPanel, FlowLayout.LEFT);
     mainPanel.add(hintDecoratedPanel, FlowLayout.CENTER);
