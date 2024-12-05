@@ -47,7 +47,7 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
   }
 
 
-  @Override
+
   // TODO: very very similar to the one in the originial model
   /**
    * Checks if the placed card can flip the adjacent card in the given direction.
