@@ -49,7 +49,6 @@ public class ThreeTriosModel implements TriosModel {
     this.cols = grid[0].length;
     this.grid = grid;
     this.deck = new ArrayList<>(deck);
-    // TODO: Subclass tests pass with this commented out, messes up game
     this.currentPlayer = Player.RED; // RED goes first
     this.isStarted = false;
 
@@ -82,7 +81,6 @@ public class ThreeTriosModel implements TriosModel {
     this.cols = grid[0].length;
     this.grid = grid;
     this.deck = new ArrayList<>(deck);
-    // TODO: Subclass tests pass with this commented out, messes up game
     this.currentPlayer = Player.RED; // RED goes first
 
     if (deck.size() < this.cellCount + 1) {
@@ -197,10 +195,11 @@ public class ThreeTriosModel implements TriosModel {
 
     currentPlayer = (currentPlayer == Player.RED) ? Player.BLUE : Player.RED;
 
-    endTurn();
     if (isGameOver()) {
       determineWinner();
     }
+
+    endTurn();
 
     try {
       for (ModelObservers observers : this.modelObservers) {
@@ -599,8 +598,6 @@ public class ThreeTriosModel implements TriosModel {
 
   @Override
   public void endTurn() {
-    currentPlayer = (currentPlayer == Player.RED) ? Player.BLUE : Player.RED;
-
     for (ModelObservers observer : this.modelObservers) {
       try {
         observer.onTurnChanged();

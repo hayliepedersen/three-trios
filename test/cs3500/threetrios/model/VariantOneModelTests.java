@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents testing for the variant one model.
+ */
 public class VariantOneModelTests extends ExamplarThreeTriosModel {
   protected VariantOneModel variantOneModelReverse;
   private VariantOneModel variantOneModelFallenAce;
@@ -78,7 +81,7 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
     variantOneModelFallenAce.placeCard(0, 0, worldDragon); // Red play
     variantOneModelFallenAce.placeCard(4, 0, heroKnight); // Blue play
 
-    this.skyWhale = new CardModel("SkyWhale", "4", "1", "9", "9");
+    //this.skyWhale = new CardModel("SkyWhale", "4", "1", "9", "9");
     // Red playing a card with a 1 SOUTH should beat the card with an A NORTH below it
     variantOneModelFallenAce.placeCard(3, 0, skyWhale); // Red play
 
@@ -99,9 +102,9 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
     Cell secondCell = this.bigGrid[4][0];
     Card cardAtSecond = secondCell.getCellCard();
 
-    Assert.assertEquals("Checking that BLUE owns the first cell",
+    Assert.assertEquals("Checking that RED owns the first cell",
             Player.RED, cardAtFirst.getOwner());
-    Assert.assertEquals("Checking that BLUE owns the second cell",
+    Assert.assertEquals("Checking that RED owns the second cell",
             Player.RED, cardAtSecond.getOwner());
   }
 }
