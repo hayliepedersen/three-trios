@@ -24,7 +24,6 @@ public class HintDecorator extends GridPanel {
    *
    * @param model the model to display
    * @param player the active player
-   * @param gridPanel the grid panel to decorate
    */
   public HintDecorator(ReadOnlyTriosModel model, Player player) {
     super(model);

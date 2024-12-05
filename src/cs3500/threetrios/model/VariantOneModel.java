@@ -198,4 +198,43 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
     // In original model, this was '>' instead of '<'
     return battleValues[0] < battleValues[1];
   }
+
+  /**
+   * Checks if the placed card can flip the adjacent card based off of combo rules.
+   *
+   * @param row            the current row
+   * @param col            the current column
+   * @param directionIndex the direction to check
+   * @param placedCard     the placed card
+   * @return true if the card can be flipped in this direction, false otherwise
+   */
+  private boolean canFlipCardCombo(int row, int col, int directionIndex, Card placedCard) {
+    int[] adjacentPos = getAdjacentPosition(row, col, directionIndex);
+    int adjacentRow = adjacentPos[0];
+    int adjacentCol = adjacentPos[1];
+
+    if (!isValidPosition(adjacentRow, adjacentCol)) {
+      return false;
+    }
+
+    // Check if adjacent card is flippable
+    Card adjacentCard = getCardAt(adjacentRow, adjacentCol);
+    if (adjacentCard == null || adjacentCard.getOwner() == currentPlayer) {
+      return false;
+    }
+
+    // Retrieve the battle values for placed and adjacent cards in the given direction
+    HashMap<String, Integer> placedCardDirections =
+            placedCard.setCardDirections().get(placedCard.getName());
+    HashMap<String, Integer> adjacentCardDirections =
+            adjacentCard.setCardDirections().get(adjacentCard.getName());
+    int[] battleValues = getBattleValues(directionIndex, placedCardDirections,
+            adjacentCardDirections);
+
+    // Determine if the placed card's value is less than the adjacent card's value, except an A can flip a 1
+    // THE BIG CHANGE FOR COMBO RULE:
+    // return battleValues[0] < battleValues[1];
+    /// if equals 10, if doesnt equal 10, change whatever
+    return battleValues[0] == 10;
+  }
 }
