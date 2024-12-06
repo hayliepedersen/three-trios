@@ -2,25 +2,20 @@ package cs3500.threetrios.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiPredicate;
 
-/**
- * A model that allows for variant battle rules to take effect,
- * possibly at the same time. These rules change how the attack values result in capture.
- */
-public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
-  private final boolean same;
-  private final boolean plus;
+public class VariantAbstract extends ThreeTriosModel implements TriosModel {
 
-  /**
-   * Constructs a variant model.
-   *
-   * @param grid the grid to initialize with
-   * @param deck the deck to initialize with
-   */
-  public VariantTwoModel(Cell[][] grid, List<Card> deck, boolean same, boolean plus) {
+  protected boolean reverse;
+  protected boolean fallenAce;
+  protected boolean same;
+  protected boolean plus;
+
+
+  public VariantAbstract(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
+                         boolean same, boolean plus) {
     super(grid, deck);
 
     this.cellCount = this.countCardCells(grid);
@@ -39,26 +34,23 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
       throw new IllegalArgumentException("Not enough cards to start the game.");
     }
 
-    dealHands();
 
-    ensureGridCells();
-
+    this.reverse = reverse;
+    this.fallenAce = fallenAce;
     if (same && plus) {
       throw new IllegalArgumentException("same and plus variants cannot both be true");
     }
 
     this.same = same;
     this.plus = plus;
+
+    dealHands();
+
+    ensureGridCells();
   }
 
-  /**
-   * Constructs a variant model with a random seed for testing.
-   *
-   * @param grid the grid to initialize with
-   * @param deck the deck to initialize with
-   */
-  public VariantTwoModel(Cell[][] grid, List<Card> deck, boolean same, boolean plus,
-                         Random random) {
+  public VariantAbstract(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
+                         boolean same, boolean plus, Random random) {
     super(grid, deck);
 
     this.cellCount = this.countCardCells(grid);
@@ -77,9 +69,9 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
       throw new IllegalArgumentException("Not enough cards to start the game.");
     }
 
-    dealHands();
-
-    ensureGridCells();
+    this.random = random;
+    this.reverse = reverse;
+    this.fallenAce = fallenAce;
 
     if (same && plus) {
       throw new IllegalArgumentException("same and plus variants cannot both be true");
@@ -87,22 +79,38 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
 
     this.same = same;
     this.plus = plus;
+
+    dealHands();
+
+    ensureGridCells();
+  }
+
+  @Override
+  protected void battlePhase(int row, int col, Card card) throws IOException {
+    if (this.reverse && !this.fallenAce) {
+      // Play with only reverse rule applied
+      battlePhaseVariant(row, col, card, 1);
+    } else if (this.fallenAce && !this.reverse) {
+      // Play with only fallen ace rule applied
+      battlePhaseVariant(row, col, card, 1);
+    } else if (this.reverse) {
+      // Play with both rules applied
+      battlePhaseVariant(row, col, card, 0);
+    }
+    else {
+      battlePhaseVariant(row, col, card, -1);
+    }
   }
 
   /**
-   * Handles the battle phase logic for a player's turn.
-   *
-   * <p>In the battle phase, player A's newly placed card battles against the opposing player B's
-   * adjacent cards. Any of player B’s cards that lose in the battle phase are flipped.
-   * This means they become player A’s cards but remain on the grid.
-   * After the battle phase, the turn changes over to the other player.</p>
+   * Handles the battle phase logic based on the specified rule.
    *
    * @param row  the row of the placed card, 0-based index
    * @param col  the column of the placed card, 0-based index
    * @param card the placed card
    */
-  @Override
-  protected void battlePhase(int row, int col, Card card) throws IOException {
+  protected void battlePhaseVariant(int row, int col, Card card, int isReverseRule)
+          throws IOException {
     List<int[]> flippedCards = new ArrayList<>();
     // Starting with the initially placed card
     flippedCards.add(new int[]{row, col});
@@ -115,7 +123,7 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
         int flippedCol = flippedCard[1];
 
         for (int idx = 0; idx < 4; idx++) {
-          if (canFlipCardVarTwo(flippedRow, flippedCol, idx, card)) {
+          if (canFlipCardVar(flippedRow, flippedCol, idx, card, isReverseRule)) {
             int[] adjacentPos = getAdjacentPosition(flippedRow, flippedCol, idx);
             int adjacentRow = adjacentPos[0];
             int adjacentCol = adjacentPos[1];
@@ -138,20 +146,31 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
    * @param placedCard     the placed card
    * @return true if the card can be flipped in this direction, false otherwise
    */
-  private boolean canFlipCardVarTwo(int row, int col, int directionIndex, Card placedCard) {
+  protected boolean canFlipCardVar(int row, int col, int directionIndex, Card placedCard,
+                                 int isReverseRule) {
 
     int[] battleValues = battleValues(row, col, directionIndex, placedCard);
     if (battleValues == null) {
       return false;
     }
 
+    if (isReverseRule != -1) {
+      BiPredicate<int[], int[]> flipCondition = isReverseRule == 1
+              ? this::flipConditionReverse
+              : this::flipConditionCombo;
+      boolean firstCheck = flipCondition.test(battleValues, new int[]{row, col});
+    }
+    boolean firstCheck = false;
+
+
     if (this.same) {
-      return battleValues[0] >= battleValues[1];
+      return battleValues[0] >= battleValues[1] || firstCheck;
     } else if (this.plus) {
       return this.canFlipCardPlus(row, col, directionIndex, placedCard)
-              || battleValues[0] > battleValues[1];
-    } else {
-      return battleValues[0] > battleValues[1];
+              || battleValues[0] > battleValues[1] || firstCheck;
+    }
+    else {
+      return battleValues[0] > battleValues[1] || firstCheck;
     }
   }
 
@@ -199,4 +218,15 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
         throw new IllegalArgumentException("direction is invalid");
     }
   }
+
+  // Flip condition for the reverse and fallen ace rules
+  private boolean flipConditionReverse(int[] battleValues, int[] position) {
+    return battleValues[0] < battleValues[1];
+  }
+
+  // Flip condition for the combination of reverse and fallen ace
+  private boolean flipConditionCombo(int[] battleValues, int[] position) {
+    return (battleValues[0] == 10 && battleValues[1] == 1) || battleValues[0] < battleValues[1];
+  }
+
 }

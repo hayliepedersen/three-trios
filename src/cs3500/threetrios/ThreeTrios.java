@@ -15,6 +15,7 @@ import cs3500.threetrios.model.MachinePlayer;
 import cs3500.threetrios.model.Player;
 import cs3500.threetrios.model.ThreeTriosModel;
 import cs3500.threetrios.model.TriosModel;
+import cs3500.threetrios.model.VariantAbstract;
 import cs3500.threetrios.model.VariantOneModel;
 import cs3500.threetrios.model.VariantTwoModel;
 import cs3500.threetrios.strategy.GoForCorners;
@@ -129,6 +130,26 @@ public final class ThreeTrios {
           reverse = true;
           fallenAce = true;
         }
+        if (args[3].equals("same")) {
+          same = true;
+        }
+        if (args[3].equals("plus")) {
+          plus = true;
+        }
+      }
+
+      if (args.length > 4) {
+        if (args[4].equals("same")) {
+          same = true;
+        }
+        if (args[4].equals("plus")) {
+          plus = true;
+        }
+      }
+
+      if ((reverse || fallenAce) && (same || plus)) {
+        model = new VariantAbstract(bigGrid, deck, reverse, fallenAce, same, plus,
+                new Random(1));
       }
 
       if (reverse || fallenAce) {

@@ -346,7 +346,9 @@ public class ThreeTriosModel implements TriosModel {
    */
   private boolean canFlipCard(int row, int col, int directionIndex, Card placedCard) {
     int[] battleValues = battleValues(row, col, directionIndex, placedCard);
-    if (battleValues == null) return false;
+    if (battleValues == null) {
+      return false;
+    }
 
     // Determine if the placed card's value is greater than the adjacent card's value
     return battleValues[0] > battleValues[1];
