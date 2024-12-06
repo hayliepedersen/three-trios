@@ -26,7 +26,6 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   protected VariantTwoModel sameVar;
   protected VariantTwoModel plusVar;
   protected Cell[][] nineGrid;
-
   private Card a;
   private Card b;
   private Card c;
