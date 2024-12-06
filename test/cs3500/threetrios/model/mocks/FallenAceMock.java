@@ -20,9 +20,8 @@ public class FallenAceMock extends VariantOneModel {
    * @param deck the deck to initialize with
    */
   public FallenAceMock(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
-                       boolean fallenAceReverseCombo, boolean reverseFallenAceCombo,
                        Random random) {
-    super(grid, deck, reverse, fallenAce, fallenAceReverseCombo, reverseFallenAceCombo);
+    super(grid, deck, reverse, fallenAce);
 
     this.cellCount = this.countCardCells(grid);
 

@@ -20,8 +20,7 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
    * @param grid the grid to initialize with
    * @param deck the deck to initialize with
    */
-  public VariantOneModel(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
-                         boolean fallenAceReverseCombo, boolean reverseFallenAceCombo) {
+  public VariantOneModel(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce) {
     super(grid, deck);
 
     this.reverse = reverse;
@@ -57,7 +56,6 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
    * @param deck the deck to initialize with
    */
   public VariantOneModel(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
-                         boolean fallenAceReverseCombo, boolean reverseFallenAceCombo,
                          Random random) {
     super(grid, deck);
 

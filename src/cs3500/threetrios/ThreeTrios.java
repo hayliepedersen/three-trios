@@ -30,7 +30,7 @@ public final class ThreeTrios {
    * @param args the arguments to initialize the game with
    */
   public static void main(String[] args) {
-    Card corruptKing = new CardModel("CorruptKing", "7", "3", "9", "A");
+    Card corruptKing = new CardModel("CorruptKing", "7", "1", "9", "A");
     Card angryDragon = new CardModel("AngryDragon", "2", "8", "9", "9");
     Card windBird = new CardModel("WindBird", "7", "2", "5", "3");
     Card heroKnight = new CardModel("HeroKnight", "A", "2", "4", "4");
@@ -101,26 +101,25 @@ public final class ThreeTrios {
     if (args.length > 2) {
       boolean reverse = false;
       boolean fallenAce = false;
-      boolean fallenAceReverseCombo = false;
-      boolean reverseFallenAceCombo = false;
 
       if (args[2].equals("reverse")) {
+        // Only reverse rule applied
         reverse = true;
       } if (args[2].equals("fallenAce")) {
+        // Only fallenAce rule applied
         fallenAce = true;
       }
 
+      // Combo
       if (args.length > 3) {
-        if (args[2].equals("fallenAce") || args[3].equals("reverse")) {
-          fallenAceReverseCombo = true;
-        }
-        if (args[2].equals("reverse") || args[3].equals("fallenAce")) {
-          reverseFallenAceCombo = true;
+        if (args[2].equals("fallenAce") && args[3].equals("reverse") ||
+                args[2].equals("reverse") || args[3].equals("fallenAce")) {
+          reverse = true;
+          fallenAce = true;
         }
       }
 
-      model = new VariantOneModel(bigGrid, deck, reverse, fallenAce, fallenAceReverseCombo,
-              reverseFallenAceCombo);
+      model = new VariantOneModel(bigGrid, deck, reverse, fallenAce, new Random(1));
     }
 
     return model;
