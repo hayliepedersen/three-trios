@@ -64,14 +64,14 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   @Test
   public void testValidConstruction() {
     this.init();
-    Assert.assertEquals(sameVar.getGridCopy()[0][0].isEmpty(), true);
-    Assert.assertEquals(plusVar.getGridCopy()[0][1].isEmpty(), true);
+    Assert.assertTrue(sameVar.getGridCopy()[0][0].isEmpty());
+    Assert.assertTrue(plusVar.getGridCopy()[0][1].isEmpty());
   }
 
   // testing that it doesn't construct
   @Test
   public void testInvalidConstruction() {
-    Assert.assertThrows(IllegalArgumentException.class, ()->
+    Assert.assertThrows(IllegalArgumentException.class, () ->
             new VariantTwoModel(bigGrid, deck, true, true, new Random(1)));
   }
 
