@@ -197,10 +197,20 @@ instead of the `hintDecoratedPanel`.
 
 #### Which files were affected
 The original model class was updated in various areas to switch private accessors to be protected. 
-No other changes to the original model occurred.
+We also abstracted the canFlipCard method.
 
 There is a new model for level 1, represented by the `VariantOneModel` class. This class extends
 the original `ThreeTriosModel` class and handles new battle phase logic accordingly.
 
 Our `ThreeTrios` runner class was modified to handle new arguments, configuring either the original
 `ThreeTriosModel` if no additional commands are given, or a `VariantOneModel` otherwise.
+
+### Level 3
+Level 3 represents a combination of features from level 1 and 2 that can be run with the following
+command-line arguments:
+- reverse plus
+- reverse same
+- fallenAce plus
+- fallenAce same
+- reverse fallenAce plus
+- reverse fallenAce same
