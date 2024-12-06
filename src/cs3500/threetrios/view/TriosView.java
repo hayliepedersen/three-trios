@@ -3,7 +3,6 @@ package cs3500.threetrios.view;
 import java.io.IOException;
 
 import cs3500.threetrios.controller.ViewFeatures;
-import cs3500.threetrios.model.Player;
 
 /**
  * To represent the view of the Three Trios model.

@@ -124,8 +124,8 @@ public final class ThreeTrios {
 
       // Variant One Combo
       if (args.length > 3) {
-        if (args[2].equals("fallenAce") && args[3].equals("reverse") ||
-                args[2].equals("reverse") || args[3].equals("fallenAce")) {
+        if (args[2].equals("fallenAce") && args[3].equals("reverse")
+                || args[2].equals("reverse") || args[3].equals("fallenAce")) {
           reverse = true;
           fallenAce = true;
         }

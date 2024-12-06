@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
  * Represents a GUI version of the view for ThreeTrios.
  */
 public class ThreeTriosGraphicsView extends JFrame implements TriosView {
-  private final JPanel gridPanel;
   private final JPanel redPlayerPanel;
   private final JPanel bluePlayerPanel;
   private final ReadOnlyTriosModel model;
@@ -45,8 +44,7 @@ public class ThreeTriosGraphicsView extends JFrame implements TriosView {
     this.player = player;
 
     this.grid = new GridPanel(model);
-    this.gridPanel = grid;
-    gridPanel.setSize(new Dimension(600, 600));
+    grid.setSize(new Dimension(600, 600));
     this.redPlayerPanel = new PlayerPanel(Player.RED, model);
     redPlayerPanel.setSize(new Dimension(100, 600));
     this.bluePlayerPanel = new PlayerPanel(Player.BLUE, model);

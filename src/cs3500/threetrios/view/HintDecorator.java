@@ -1,6 +1,10 @@
 package cs3500.threetrios.view;
 
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 

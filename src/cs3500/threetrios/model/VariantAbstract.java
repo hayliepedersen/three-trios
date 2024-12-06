@@ -6,12 +6,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.BiPredicate;
 
+/**
+ * Represents a variant abstract class that allows for the combination of level 1 and level 2
+ * features for level 3.
+ */
 public class VariantAbstract extends ThreeTriosModel implements TriosModel {
   protected boolean reverse;
   protected boolean fallenAce;
   protected boolean same;
   protected boolean plus;
 
+  /**
+   * Constructs the variant abstract class.
+   */
   public VariantAbstract(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
                          boolean same, boolean plus) {
     super(grid, deck);
@@ -47,6 +54,9 @@ public class VariantAbstract extends ThreeTriosModel implements TriosModel {
     ensureGridCells();
   }
 
+  /**
+   * Constructs the variant abstract class.
+   */
   public VariantAbstract(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
                          boolean same, boolean plus, Random random) {
     super(grid, deck);

@@ -1,6 +1,7 @@
 package cs3500.threetrios.model;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,14 +13,14 @@ import java.util.Random;
  */
 public class VariantTwoModelTests extends ExamplarThreeTriosModel {
 
-  /**
-   * tests that it constructs properly
+  /*
+   * - tests that it constructs properly
    * - valid vs invalid
    *
-   * tests that it functions properly with same
-   * tests that it function properly with plus
-   * tests that both can default to the original
-   * tests that plus won't work unless there are at least 2
+   * - tests that it functions properly with same
+   * - tests that it function properly with plus
+   * - tests that both can default to the original
+   * - tests that plus won't work unless there are at least 2
    */
 
   protected VariantTwoModel sameVar;
@@ -29,19 +30,18 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   private Card a;
   private Card b;
   private Card c;
-  private Card d;
   private Card e;
-  private Card f;
 
+  @Before
   public void init() {
     this.sameVar = new VariantTwoModel(bigGrid, deck, true, false, new Random(1));
 
     this.a = new CardModel("A", "5", "4", "3", "A");
     this.b = new CardModel("B", "5", "5", "3", "A");
     this.c = new CardModel("C", "6", "5", "3", "A");
-    this.d = new CardModel("D", "5", "5", "3", "7");
+    Card d = new CardModel("D", "5", "5", "3", "7");
     this.e = new CardModel("E", "5", "5", "1", "A");
-    this.f = new CardModel("F", "A", "2", "A", "A");
+    Card f = new CardModel("F", "A", "2", "A", "A");
 
     this.nineGrid = new Cell[3][3];
     this.nineGrid[0][0] = new Hole();
@@ -71,7 +71,7 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   // testing that it doesn't construct
   @Test
   public void testInvalidConstruction() {
-    Assert.assertThrows(IllegalArgumentException.class, ()->
+    Assert.assertThrows(IllegalArgumentException.class, () ->
             new VariantTwoModel(bigGrid, deck, true, true, new Random(1)));
   }
 

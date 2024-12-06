@@ -29,7 +29,7 @@ public class VariantOneMock extends VariantOneModel {
     this.redHand = new ArrayList<>(Arrays.asList(new CardModel("WorldDragon", "8", "3", "5", "7"),
             new CardModel("SkyWhale", "4", "1", "9", "9")));
 
-    this.blueHand =new ArrayList<>(Arrays.asList(new CardModel("HeroKnight", "A", "2", "4", "4"),
+    this.blueHand = new ArrayList<>(Arrays.asList(new CardModel("HeroKnight", "A", "2", "4", "4"),
             new CardModel("WindBird", "7", "2", "5", "3")));
     this.modelObservers = new ArrayList<>();
 
