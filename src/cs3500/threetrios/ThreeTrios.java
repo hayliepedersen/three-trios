@@ -16,6 +16,7 @@ import cs3500.threetrios.model.Player;
 import cs3500.threetrios.model.ThreeTriosModel;
 import cs3500.threetrios.model.TriosModel;
 import cs3500.threetrios.model.VariantOneModel;
+import cs3500.threetrios.model.VariantTwoModel;
 import cs3500.threetrios.strategy.GoForCorners;
 import cs3500.threetrios.strategy.HighestFlipNum;
 import cs3500.threetrios.view.ThreeTriosGraphicsView;
@@ -101,6 +102,8 @@ public final class ThreeTrios {
     if (args.length > 2) {
       boolean reverse = false;
       boolean fallenAce = false;
+      boolean same = false;
+      boolean plus = false;
 
       if (args[2].equals("reverse")) {
         // Only reverse rule applied
@@ -109,6 +112,15 @@ public final class ThreeTrios {
         // Only fallenAce rule applied
         fallenAce = true;
       }
+      if (args[2].equals("same")) {
+        // Only fallenAce rule applied
+        same = true;
+      }
+      if (args[2].equals("plus")) {
+        // Only fallenAce rule applied
+        plus = true;
+      }
+
 
       // Combo
       if (args.length > 3) {
@@ -119,7 +131,12 @@ public final class ThreeTrios {
         }
       }
 
-      model = new VariantOneModel(bigGrid, deck, reverse, fallenAce, new Random(1));
+      if (reverse || fallenAce) {
+        model = new VariantOneModel(bigGrid, deck, reverse, fallenAce, new Random(1));
+      }
+      if (same || plus) {
+        model = new VariantTwoModel(bigGrid, deck, same, plus, new Random(1));
+      }
     }
 
     return model;
