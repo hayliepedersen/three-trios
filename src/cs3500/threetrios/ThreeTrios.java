@@ -114,15 +114,15 @@ public final class ThreeTrios {
         fallenAce = true;
       }
       if (args[2].equals("same")) {
-        // Only fallenAce rule applied
+        // Only same rule applied
         same = true;
       }
       if (args[2].equals("plus")) {
-        // Only fallenAce rule applied
+        // Only plus rule applied
         plus = true;
       }
 
-      // Combo
+      // Variant One Combo
       if (args.length > 3) {
         if (args[2].equals("fallenAce") && args[3].equals("reverse") ||
                 args[2].equals("reverse") || args[3].equals("fallenAce")) {
@@ -150,7 +150,6 @@ public final class ThreeTrios {
         model = new VariantAbstract(bigGrid, deck, reverse, fallenAce, same, plus,
                 new Random(1));
       }
-
       if (reverse || fallenAce) {
         model = new VariantOneModel(bigGrid, deck, reverse, fallenAce, new Random(1));
       }
