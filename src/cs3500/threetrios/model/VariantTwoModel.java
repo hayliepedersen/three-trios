@@ -2,6 +2,7 @@ package cs3500.threetrios.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +23,13 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
   public VariantTwoModel(Cell[][] grid, List<Card> deck, boolean same, boolean plus) {
     super(grid, deck);
 
+    if (same && plus) {
+      throw new IllegalArgumentException("same and plus variants cannot both be true");
+    }
+
+    this.same = same;
+    this.plus = plus;
+
     this.cellCount = this.countCardCells(grid);
 
     this.redHand = new ArrayList<>();
@@ -38,16 +46,11 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
       throw new IllegalArgumentException("Not enough cards to start the game.");
     }
 
+    this.random = new Random();
+
     dealHands();
 
     ensureGridCells();
-
-    if (same && plus) {
-      throw new IllegalArgumentException("same and plus variants cannot both be true");
-    }
-
-    this.same = same;
-    this.plus = plus;
   }
 
   /**
@@ -60,6 +63,13 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
                          Random random) {
     super(grid, deck);
 
+    if (same && plus) {
+      throw new IllegalArgumentException("same and plus variants cannot both be true");
+    }
+
+    this.same = same;
+    this.plus = plus;
+
     this.cellCount = this.countCardCells(grid);
 
     this.redHand = new ArrayList<>();
@@ -70,23 +80,18 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
     this.cols = grid[0].length;
     this.grid = grid;
     this.deck = new ArrayList<>(deck);
-    this.isStarted = false;
 
     if (deck.size() < this.cellCount + 1) {
       throw new IllegalArgumentException("Not enough cards to start the game.");
     }
 
+    this.random = random;
+
     dealHands();
 
     ensureGridCells();
-
-    if (same && plus) {
-      throw new IllegalArgumentException("same and plus variants cannot both be true");
-    }
-
-    this.same = same;
-    this.plus = plus;
   }
+
 
   /**
    * Handles the battle phase logic for a player's turn.
@@ -156,7 +161,7 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
 
   private boolean canFlipCardPlus(int row, int col, int directionIndex, Card placedCard) {
     // Retrieve the battle values for placed and adjacent cards in the given direction
-    int[] battleValues = battleValues(row, col, directionIndex, placedCard);
+    int[] battleValues = battleValuesVar(row, col, directionIndex, placedCard);
 
     if (battleValues == null) {
       return false;
@@ -168,14 +173,42 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
     int numSums = 0;
 
     while (nextDirection != directionIndex) {
-      battleValues = battleValues(row, col, directionIndex, placedCard);
-      if (battleValues[0] + battleValues[1] == sumToCheck) {
+      battleValues = battleValuesVar(row, col, nextDirection, placedCard);
+      if (battleValues == null) {
+        numSums += 0;
+      } else if (battleValues[0] + battleValues[1] == sumToCheck) {
         numSums += 1;
       }
       nextDirection = nextDir(nextDirection);
     }
 
-    return numSums >= 2;
+    return numSums >= 1;
+  }
+
+
+  protected int[] battleValuesVar(int row, int col, int directionIndex, Card placedCard) {
+    int[] adjacentPos = getAdjacentPosition(row, col, directionIndex);
+    int adjacentRow = adjacentPos[0];
+    int adjacentCol = adjacentPos[1];
+
+    if (!isValidPosition(adjacentRow, adjacentCol)) {
+      return null;
+    }
+
+    // Check if adjacent card is flippable
+    Card adjacentCard = getCardAt(adjacentRow, adjacentCol);
+    if (adjacentCard == null) {
+      return null;
+    }
+
+    // Retrieve the battle values for placed and adjacent cards in the given direction
+    HashMap<String, Integer> placedCardDirections =
+            placedCard.setCardDirections().get(placedCard.getName());
+    HashMap<String, Integer> adjacentCardDirections =
+            adjacentCard.setCardDirections().get(adjacentCard.getName());
+
+    return getBattleValues(directionIndex, placedCardDirections,
+            adjacentCardDirections);
   }
 
   /**

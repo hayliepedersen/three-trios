@@ -71,7 +71,7 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   // testing that it doesn't construct
   @Test
   public void testInvalidConstruction() {
-    Assert.assertThrows(IllegalArgumentException.class, () ->
+    Assert.assertThrows(IllegalArgumentException.class, ()->
             new VariantTwoModel(bigGrid, deck, true, true, new Random(1)));
   }
 
@@ -110,6 +110,7 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
     this.init();
     // red = [F, B, C]
     // blue = [A, E, D]
+
     plusVar.placeCard(0, 1, b);
     plusVar.placeCard(1, 0, e);
     plusVar.placeCard(2, 1, c);
@@ -117,5 +118,6 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
     Assert.assertEquals(b.getOwner(), Player.RED);
     plusVar.placeCard(1, 1, a);
     Assert.assertEquals(b.getOwner(), Player.BLUE);
+    Assert.assertEquals(c.getOwner(), Player.BLUE);
   }
 }
