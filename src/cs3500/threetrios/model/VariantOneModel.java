@@ -106,7 +106,7 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
       battlePhaseReverse(row, col, card);
     } else if (this.reverse) {
       // Play with both rules applied
-      battlePhaseReverse(row, col, card);
+      battlePhaseCombo(row, col, card);
     }
 
   }
@@ -137,6 +137,33 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
 
         for (int idx = 0; idx < 4; idx++) {
           if (canFlipCardReverse(flippedRow, flippedCol, idx, card)) {
+            int[] adjacentPos = getAdjacentPosition(flippedRow, flippedCol, idx);
+            int adjacentRow = adjacentPos[0];
+            int adjacentCol = adjacentPos[1];
+
+            flipCard(adjacentRow, adjacentCol);
+            newlyFlippedCards.add(new int[]{adjacentRow, adjacentCol});
+          }
+        }
+      }
+      flippedCards = newlyFlippedCards;
+    }
+  }
+
+  private void battlePhaseCombo(int row, int col, Card card) throws IOException {
+    List<int[]> flippedCards = new ArrayList<>();
+    // Starting with the initially placed card
+    flippedCards.add(new int[]{row, col});
+
+    while (!flippedCards.isEmpty()) {
+      List<int[]> newlyFlippedCards = new ArrayList<>();
+
+      for (int[] flippedCard : flippedCards) {
+        int flippedRow = flippedCard[0];
+        int flippedCol = flippedCard[1];
+
+        for (int idx = 0; idx < 4; idx++) {
+          if (canFlipCardCombo(flippedRow, flippedCol, idx, card)) {
             int[] adjacentPos = getAdjacentPosition(flippedRow, flippedCol, idx);
             int adjacentRow = adjacentPos[0];
             int adjacentCol = adjacentPos[1];
@@ -225,6 +252,7 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
     // THE BIG CHANGE FOR COMBO RULE:
     // return battleValues[0] < battleValues[1];
     /// if equals 10, if doesnt equal 10, change whatever
-    return battleValues[0] == 10;
+    // it can flip the card if battleValues[1] is 1 and battleValues[0] is an A or if
+    return (battleValues[0] == 10 && battleValues[1] == 1) || battleValues[0] < battleValues[1];
   }
 }

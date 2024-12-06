@@ -1,6 +1,7 @@
 package cs3500.threetrios.model.mocks;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -12,21 +13,24 @@ import cs3500.threetrios.model.VariantOneModel;
 /**
  * Represents a mock for the variant one model where the player's hands are pre-initialized.
  */
-public class FallenAceMock extends VariantOneModel {
+public class VariantOneMock extends VariantOneModel {
   /**
    * Constructs a variant model with a random seed for testing.
    *
    * @param grid the grid to initialize with
    * @param deck the deck to initialize with
    */
-  public FallenAceMock(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
-                       Random random) {
+  public VariantOneMock(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
+                        Random random) {
     super(grid, deck, reverse, fallenAce);
 
     this.cellCount = this.countCardCells(grid);
 
-    this.redHand = new ArrayList<>();
-    this.blueHand = new ArrayList<>();
+    this.redHand = new ArrayList<>(Arrays.asList(new CardModel("WorldDragon", "8", "3", "5", "7"),
+            new CardModel("SkyWhale", "4", "1", "9", "9")));
+
+    this.blueHand =new ArrayList<>(Arrays.asList(new CardModel("HeroKnight", "A", "2", "4", "4"),
+            new CardModel("WindBird", "7", "2", "5", "3")));
     this.modelObservers = new ArrayList<>();
 
     this.rows = grid.length;
@@ -40,14 +44,13 @@ public class FallenAceMock extends VariantOneModel {
 
     this.random = random;
 
-    dealHands();
-
     ensureGridCells();
   }
 
   @Override
   public List<Card> getBlueHand() {
-    return List.of(new CardModel("HeroKnight", "A", "2", "4", "4"));
+    return List.of(new CardModel("HeroKnight", "A", "2", "4", "4"),
+            new CardModel("WindBird", "7", "2", "5", "3"));
   }
 
   @Override

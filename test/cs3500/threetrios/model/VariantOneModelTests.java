@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import cs3500.threetrios.model.mocks.FallenAceMock;
+import cs3500.threetrios.model.mocks.VariantOneMock;
 
 /**
  * Represents testing for the variant one model.
@@ -16,6 +16,7 @@ import cs3500.threetrios.model.mocks.FallenAceMock;
 public class VariantOneModelTests extends ExamplarThreeTriosModel {
   protected VariantOneModel variantOneModelReverse;
   private VariantOneModel variantOneModelFallenAce;
+  private VariantOneModel variantOneModelCombo;
 
   @Before
   public void setup() {
@@ -25,7 +26,10 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
     this.variantOneModelReverse = new VariantOneModel(bigGrid, deck, true, false,
             new Random(1));
     // Model where only fallenAce rule is applied
-    this.variantOneModelFallenAce = new FallenAceMock(bigGrid, deck, false, true,
+    this.variantOneModelFallenAce = new VariantOneMock(bigGrid, deck, false, true,
+            new Random(1));
+    // Model where only both rules are applied
+    this.variantOneModelCombo = new VariantOneMock(bigGrid, deck, true, true,
             new Random(1));
   }
 
@@ -82,8 +86,15 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
     variantOneModelFallenAce.placeCard(0, 0, worldDragon); // Red play
     variantOneModelFallenAce.placeCard(4, 0, heroKnight); // Blue play
 
+    Cell heroKnightCell = this.bigGrid[4][0];
+    Card heroKnightCellCard = heroKnightCell.getCellCard();
+
+    Assert.assertEquals("Checking that BLUE initially owns the heroKnight cell",
+            Player.BLUE, heroKnightCellCard.getOwner());
+
     // Red playing a card with a 1 SOUTH should beat the card with an A NORTH below it
-    variantOneModelFallenAce.placeCard(3, 0, skyWhale); // Red play
+    variantOneModelFallenAce.placeCard(3, 0,
+            new CardModel("SkyWhale", "4", "1", "9", "9")); // Red play
 
     /*
      SkyWhale:
@@ -96,15 +107,68 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
       2
     */
 
-    Cell firstCell = this.bigGrid[3][0];
-    Card cardAtFirst = firstCell.getCellCard();
+    Assert.assertEquals("Checking that RED now owns the the heroKnight cell",
+            Player.RED, heroKnightCellCard.getOwner());
+  }
 
-    Cell secondCell = this.bigGrid[4][0];
-    Card cardAtSecond = secondCell.getCellCard();
+  @Test
+  public void testBattlePhaseWithCombinationRules() throws IOException {
+    variantOneModelCombo.placeCard(3, 0,
+            new CardModel("SkyWhale", "4", "1", "9", "9")); // Red play
 
-    Assert.assertEquals("Checking that RED owns the first cell",
-            Player.RED, cardAtFirst.getOwner());
-    Assert.assertEquals("Checking that RED owns the second cell",
-            Player.RED, cardAtSecond.getOwner());
+    Cell skyWhaleCell = this.bigGrid[3][0];
+    Card skyWhaleCellCellCard = skyWhaleCell.getCellCard();
+
+    Assert.assertEquals("Checking that RED initially owns the skyWhale cell",
+            Player.RED, skyWhaleCellCellCard.getOwner());
+
+    variantOneModelCombo.placeCard(4, 0, heroKnight); // Blue play
+
+    // Red playing a card with a 1 SOUTH should beat the card with an A NORTH below it
+
+
+    /*
+     SkyWhale:
+      4
+     9 9          // Owned by Red initially -> Blue captured with A vs 1
+      1
+     HeroKnight:
+      A
+     4 4          // Owned by Blue
+      2
+    */
+
+    Assert.assertEquals("Checking that BLUE now owns the the skyWhale cell",
+            Player.BLUE, skyWhaleCellCellCard.getOwner());
+
+    // 'A' should be able to beat '1', but a lower card should beat a higher card otherwise...
+
+    // red play world dragon to 1 0
+    variantOneModelCombo.placeCard(1, 0, worldDragon); // Red play
+
+    Cell worldDragonCell = this.bigGrid[1][0];
+    Card worldDragonCellCellCard = worldDragonCell.getCellCard();
+
+    Assert.assertEquals("Checking that RED initially owns the worldDragon cell",
+            Player.RED, worldDragonCellCellCard.getOwner());
+
+    variantOneModelCombo.placeCard(0, 0, windBird); // Blue play
+
+    // Red playing a card with a 1 SOUTH should beat the card with an A NORTH below it
+
+
+    /*
+     WindBird:
+      7
+     3 5          // Owned by Blue
+      2
+     WorldDragon
+      8
+     7 5          // Owned by Red initially -> Blue captured with 2 vs 8
+      3
+    */
+
+    Assert.assertEquals("Checking that BLUE now owns the the worldDragon cell",
+            Player.BLUE, worldDragonCellCellCard.getOwner());
   }
 }
