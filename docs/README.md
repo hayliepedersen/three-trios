@@ -202,6 +202,9 @@ We also abstracted the canFlipCard method.
 There is a new model for level 1, represented by the `VariantOneModel` class. This class extends
 the original `ThreeTriosModel` class and handles new battle phase logic accordingly.
 
+There is a new model for level 2, represented by the `VariantTwoModel` class. This class extends
+the original `ThreeTriosModel` class and handles new battle phase logic accordingly.
+
 Our `ThreeTrios` runner class was modified to handle new arguments, configuring either the original
 `ThreeTriosModel` if no additional commands are given, or a `VariantOneModel` otherwise.
 
