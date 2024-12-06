@@ -23,10 +23,9 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
 
     // Model where only reverse rule is applied
     this.variantOneModelReverse = new VariantOneModel(bigGrid, deck, true, false,
-            false, false,
             new Random(1));
     // Model where only fallenAce rule is applied
-    this.variantOneModelFallenAce = new FallenAceMock(bigGrid, deck, false, true, false, false,
+    this.variantOneModelFallenAce = new FallenAceMock(bigGrid, deck, false, true,
             new Random(1));
   }
 

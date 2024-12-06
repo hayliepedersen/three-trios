@@ -1,4 +1,4 @@
-### Overview
+# Overview
 
 **Problem Statement**
 
@@ -185,10 +185,22 @@ of the new `configurePlayer()` method which sets up players based off of command
 
 To enable hints, a player can hit the 'H' key on their turn, and press again to disable.
 
-To play the game without the possibility of hints, one can modify the following section of the
+- To play the game without the possibility of hints, one can modify the following section of the
 `ThreeTriosGraphicView` constructor, to use the typical `gridPanel` 
 instead of the `hintDecoratedPanel`.
-````java
-mainPanel.add(redPlayerPanel, FlowLayout.LEFT);
-mainPanel.add(hintDecoratedPanel, FlowLayout.CENTER);
-mainPanel.add(bluePlayerPanel, FlowLayout.RIGHT);
+  ````java
+  mainPanel.add(redPlayerPanel, FlowLayout.LEFT);
+  mainPanel.add(hintDecoratedPanel, FlowLayout.CENTER);
+  mainPanel.add(bluePlayerPanel, FlowLayout.RIGHT);
+
+### Level 1
+
+#### Which files were affected
+The original model class was updated in various areas to switch private accessors to be protected. 
+No other changes to the original model occurred.
+
+There is a new model for level 1, represented by the `VariantOneModel` class. This class extends
+the original `ThreeTriosModel` class and handles new battle phase logic accordingly.
+
+Our `ThreeTrios` runner class was modified to handle new arguments, configuring either the original
+`ThreeTriosModel` if no additional commands are given, or a `VariantOneModel` otherwise.
