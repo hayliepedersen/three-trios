@@ -344,18 +344,26 @@ public class ThreeTriosModel implements TriosModel {
    * @return true if the card can be flipped in this direction, false otherwise
    */
   private boolean canFlipCard(int row, int col, int directionIndex, Card placedCard) {
+    int[] battleValues = getValues(row, col, directionIndex, placedCard);
+    if (battleValues == null) return false;
+
+    // Determine if the placed card's value is greater than the adjacent card's value
+    return battleValues[0] > battleValues[1];
+  }
+
+  protected int[] getValues(int row, int col, int directionIndex, Card placedCard) {
     int[] adjacentPos = getAdjacentPosition(row, col, directionIndex);
     int adjacentRow = adjacentPos[0];
     int adjacentCol = adjacentPos[1];
 
     if (!isValidPosition(adjacentRow, adjacentCol)) {
-      return false;
+      return null;
     }
 
     // Check if adjacent card is flippable
     Card adjacentCard = getCardAt(adjacentRow, adjacentCol);
     if (adjacentCard == null || adjacentCard.getOwner() == currentPlayer) {
-      return false;
+      return null;
     }
 
     // Retrieve the battle values for placed and adjacent cards in the given direction
@@ -363,11 +371,9 @@ public class ThreeTriosModel implements TriosModel {
             placedCard.setCardDirections().get(placedCard.getName());
     HashMap<String, Integer> adjacentCardDirections =
             adjacentCard.setCardDirections().get(adjacentCard.getName());
-    int[] battleValues = getBattleValues(directionIndex, placedCardDirections,
-            adjacentCardDirections);
 
-    // Determine if the placed card's value is greater than the adjacent card's value
-    return battleValues[0] > battleValues[1];
+    return getBattleValues(directionIndex, placedCardDirections,
+            adjacentCardDirections);
   }
 
   /**
