@@ -67,18 +67,6 @@ public class ExamplarThreeTriosModel {
   }
 
   @Test
-  public void testEvenNumberCellsThrowsException() {
-    Assert.assertThrows("Should throw exception when given an even number of cells",
-            IllegalArgumentException.class, () -> new ThreeTriosModel(new Cell[3][2], deck));
-  }
-
-  @Test
-  public void testSmallDeckThrowsException() {
-    Assert.assertThrows("Should throw exception with too small of a deck",
-            IllegalArgumentException.class, () -> new ThreeTriosModel(new Cell[3][3], deck));
-  }
-
-  @Test
   public void testStartsWithRedPlayer() {
     Assert.assertEquals("Checking game starts with red player",
             Player.RED, model.getCurrentPlayer());

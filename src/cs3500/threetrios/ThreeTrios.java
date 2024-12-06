@@ -15,6 +15,7 @@ import cs3500.threetrios.model.MachinePlayer;
 import cs3500.threetrios.model.Player;
 import cs3500.threetrios.model.ThreeTriosModel;
 import cs3500.threetrios.model.TriosModel;
+import cs3500.threetrios.model.VariantOneModel;
 import cs3500.threetrios.strategy.GoForCorners;
 import cs3500.threetrios.strategy.HighestFlipNum;
 import cs3500.threetrios.view.ThreeTriosGraphicsView;
@@ -61,7 +62,7 @@ public final class ThreeTrios {
     List<Card> deck = List.of(corruptKing, angryDragon, windBird, heroKnight, worldDragon,
             skyWhale, systems, algo, stats, linAlg, engineering);
 
-    TriosModel model = new ThreeTriosModel(bigGrid, deck, new Random(1));
+    TriosModel model = getTriosModel(args, bigGrid, deck);
 
     String player1Type = args[0];
     String player2Type = args[1];
@@ -82,6 +83,47 @@ public final class ThreeTrios {
     viewPlayer2.makeVisible();
 
     model.startGame();
+  }
+
+  /**
+   * Creates a trios model based off of command-line arguments.
+   *
+   * @param args the arguments
+   * @param bigGrid the grid to initialize with
+   * @param deck the deck to initialize with
+   * @return a TriosModel
+   */
+  private static TriosModel getTriosModel(String[] args, Cell[][] bigGrid, List<Card> deck) {
+    TriosModel model;
+
+    model = new ThreeTriosModel(bigGrid, deck, new Random(1));
+
+    if (args.length > 2) {
+      boolean reverse = false;
+      boolean fallenAce = false;
+      boolean fallenAceReverseCombo = false;
+      boolean reverseFallenAceCombo = false;
+
+      if (args[2].equals("reverse")) {
+        reverse = true;
+      } if (args[2].equals("fallenAce")) {
+        fallenAce = true;
+      }
+
+      if (args.length > 3) {
+        if (args[2].equals("fallenAce") || args[3].equals("reverse")) {
+          fallenAceReverseCombo = true;
+        }
+        if (args[2].equals("reverse") || args[3].equals("fallenAce")) {
+          reverseFallenAceCombo = true;
+        }
+      }
+
+      model = new VariantOneModel(bigGrid, deck, reverse, fallenAce, fallenAceReverseCombo,
+              reverseFallenAceCombo);
+    }
+
+    return model;
   }
 
   /**

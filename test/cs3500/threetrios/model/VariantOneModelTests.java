@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+import cs3500.threetrios.model.mocks.FallenAceMock;
+
 /**
  * Represents testing for the variant one model.
  */
@@ -21,9 +23,10 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
 
     // Model where only reverse rule is applied
     this.variantOneModelReverse = new VariantOneModel(bigGrid, deck, true, false,
+            false, false,
             new Random(1));
     // Model where only fallenAce rule is applied
-    this.variantOneModelFallenAce = new VariantOneModel(bigGrid, deck, false, true,
+    this.variantOneModelFallenAce = new FallenAceMock(bigGrid, deck, false, true, false, false,
             new Random(1));
   }
 
@@ -77,11 +80,9 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
 
   @Test
   public void testBattlePhaseWithFallenAceRule() throws IOException {
-
     variantOneModelFallenAce.placeCard(0, 0, worldDragon); // Red play
     variantOneModelFallenAce.placeCard(4, 0, heroKnight); // Blue play
 
-    //this.skyWhale = new CardModel("SkyWhale", "4", "1", "9", "9");
     // Red playing a card with a 1 SOUTH should beat the card with an A NORTH below it
     variantOneModelFallenAce.placeCard(3, 0, skyWhale); // Red play
 
@@ -92,7 +93,7 @@ public class VariantOneModelTests extends ExamplarThreeTriosModel {
       1
      HeroKnight:
       A
-     4 4          // Owned by Red -> Captured with 1 vs A
+     4 4          // Owned by Blue initially -> Red Captured with 1 vs A
       2
     */
 

@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import cs3500.threetrios.controller.ModelObservers;
-
 /**
  * A model that allows for variant battle rules to take effect,
  * possibly at the same time. These rules change how the attack values result in capture.
@@ -22,18 +20,14 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
    * @param grid the grid to initialize with
    * @param deck the deck to initialize with
    */
-  public VariantOneModel(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce) {
-    // TODO: Construct this with true or false from the command line arguments
+  public VariantOneModel(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
+                         boolean fallenAceReverseCombo, boolean reverseFallenAceCombo) {
     super(grid, deck);
 
     this.reverse = reverse;
     this.fallenAce = fallenAce;
 
     this.cellCount = this.countCardCells(grid);
-
-    if (this.cellCount % 2 == 0) {
-      throw new IllegalArgumentException("Grid must have an odd number of card cells.");
-    }
 
     this.redHand = new ArrayList<>();
     this.blueHand = new ArrayList<>();
@@ -63,6 +57,7 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
    * @param deck the deck to initialize with
    */
   public VariantOneModel(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
+                         boolean fallenAceReverseCombo, boolean reverseFallenAceCombo,
                          Random random) {
     super(grid, deck);
 
@@ -90,9 +85,6 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
 
     ensureGridCells();
   }
-
-  // TODO: Once functionality is work, do abstraction between this model and original model,
-  // including constructor, move stuff to startGame()
 
   /**
    * Handles the battle phase logic for a player's turn.

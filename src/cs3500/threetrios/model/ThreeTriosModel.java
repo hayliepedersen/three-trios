@@ -37,10 +37,6 @@ public class ThreeTriosModel implements TriosModel {
   public ThreeTriosModel(Cell[][] grid, List<Card> deck) {
     this.cellCount = this.countCardCells(grid);
 
-    if (this.cellCount % 2 == 0) {
-      throw new IllegalArgumentException("Grid must have an odd number of card cells.");
-    }
-
     this.redHand = new ArrayList<>();
     this.blueHand = new ArrayList<>();
     this.modelObservers = new ArrayList<>();
