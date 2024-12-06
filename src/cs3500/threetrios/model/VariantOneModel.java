@@ -2,7 +2,6 @@ package cs3500.threetrios.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiPredicate;
@@ -135,16 +134,6 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
         int flippedCol = flippedCard[1];
 
         for (int idx = 0; idx < 4; idx++) {
-          /*
-          for (int idx = 0; idx < 4; idx++) {
-          boolean canFlip = isReverseRule
-                  ? canFlipCard(flippedRow, flippedCol, idx, card, this::flipConditionReverse)
-                  : canFlipCard(flippedRow, flippedCol, idx, card, this::flipConditionCombo);
-
-          if (canFlip) {
-           */
-
-
           if (canFlipCard(flippedRow, flippedCol, idx, card, isReverseRule)) {
             int[] adjacentPos = getAdjacentPosition(flippedRow, flippedCol, idx);
             int adjacentRow = adjacentPos[0];
@@ -155,6 +144,7 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
           }
         }
       }
+
       flippedCards = newlyFlippedCards;
     }
   }
@@ -169,8 +159,6 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
    * @param isReverseRule  the flip condition to base the flip off of
    * @return true if the card can be flipped in this direction, false otherwise
    */
-
-  // BiPredicate<int[], int[]> flipCondition
   private boolean canFlipCard(int row, int col, int directionIndex, Card placedCard,
                               int isReverseRule) {
     int[] battleValues = battleValues(row, col, directionIndex, placedCard);
@@ -186,7 +174,6 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
     }
 
     return battleValues[0] > battleValues[1];
-    // return flipCondition.test(battleValues, new int[]{row, col});
   }
 
   // Flip condition for the reverse and fallen ace rules

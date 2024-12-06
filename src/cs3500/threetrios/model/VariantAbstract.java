@@ -7,12 +7,10 @@ import java.util.Random;
 import java.util.function.BiPredicate;
 
 public class VariantAbstract extends ThreeTriosModel implements TriosModel {
-
   protected boolean reverse;
   protected boolean fallenAce;
   protected boolean same;
   protected boolean plus;
-
 
   public VariantAbstract(Cell[][] grid, List<Card> deck, boolean reverse, boolean fallenAce,
                          boolean same, boolean plus) {
@@ -34,9 +32,9 @@ public class VariantAbstract extends ThreeTriosModel implements TriosModel {
       throw new IllegalArgumentException("Not enough cards to start the game.");
     }
 
-
     this.reverse = reverse;
     this.fallenAce = fallenAce;
+
     if (same && plus) {
       throw new IllegalArgumentException("same and plus variants cannot both be true");
     }
@@ -228,5 +226,4 @@ public class VariantAbstract extends ThreeTriosModel implements TriosModel {
   private boolean flipConditionCombo(int[] battleValues, int[] position) {
     return (battleValues[0] == 10 && battleValues[1] == 1) || battleValues[0] < battleValues[1];
   }
-
 }

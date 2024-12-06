@@ -122,7 +122,6 @@ public final class ThreeTrios {
         plus = true;
       }
 
-
       // Combo
       if (args.length > 3) {
         if (args[2].equals("fallenAce") && args[3].equals("reverse") ||
