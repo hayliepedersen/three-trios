@@ -193,7 +193,7 @@ instead of the `hintDecoratedPanel`.
   mainPanel.add(hintDecoratedPanel, FlowLayout.CENTER);
   mainPanel.add(bluePlayerPanel, FlowLayout.RIGHT);
 
-### Level 1
+### Level 1 & 2
 
 #### Which files were affected
 The original model class was updated in various areas to switch private accessors to be protected. 

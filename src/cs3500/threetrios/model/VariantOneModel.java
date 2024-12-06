@@ -162,7 +162,7 @@ public class VariantOneModel extends ThreeTriosModel implements TriosModel {
    */
   private boolean canFlipCard(int row, int col, int directionIndex, Card placedCard,
                               BiPredicate<int[], int[]> flipCondition) {
-    int[] battleValues = getValues(row, col, directionIndex, placedCard);
+    int[] battleValues = battleValues(row, col, directionIndex, placedCard);
     if (battleValues == null) return false;
 
     // Delegate to the specific flip condition

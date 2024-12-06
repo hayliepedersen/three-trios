@@ -106,31 +106,6 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
    */
   @Override
   protected void battlePhase(int row, int col, Card card) throws IOException {
-    if (this.same && !this.plus) {
-      // Play with same rule applied
-      battlePhaseVarTwo(row, col, card);
-    } else if (this.plus && !this.same) {
-      // Play with reverse rule applied
-      battlePhaseVarTwo(row, col, card);
-    } else {
-
-    }
-
-  }
-
-  /**
-   * Handles the battle phase logic under the reverse rule.
-   *
-   * <p>In the battle phase, player A's newly placed card battles against the opposing player B's
-   * adjacent cards. Any of player B’s cards that lose in the battle phase are flipped.
-   * This means they become player A’s cards but remain on the grid.
-   * After the battle phase, the turn changes over to the other player.</p>
-   *
-   * @param row  the row of the placed card, 0-based index
-   * @param col  the column of the placed card, 0-based index
-   * @param card the placed card
-   */
-  private void battlePhaseVarTwo(int row, int col, Card card) throws IOException {
     List<int[]> flippedCards = new ArrayList<>();
     // Starting with the initially placed card
     flippedCards.add(new int[]{row, col});
@@ -157,7 +132,6 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
     }
   }
 
-
   /**
    * Checks if the placed card can flip the adjacent card in the given direction.
    *
@@ -170,28 +144,19 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
   private boolean canFlipCardVarTwo(int row, int col, int directionIndex, Card placedCard) {
 
     int[] battleValues = battleValues(row, col, directionIndex, placedCard);
-    if (battleValues[0] + battleValues[1] == -2) {
-      return false;
-    }
+    if (battleValues == null) return false;
 
-    // Determine if the placed card's value is less than the adjacent card's value
-    // THE BIG CHANGE FOR REVERSE RULE:
-    // In original model, this was '>' instead of '>='
     if (this.same) {
       return battleValues[0] >= battleValues[1];
-    }
-    else if (this.plus) {
+    } else if (this.plus) {
       return this.canFlipCardPlus(row, col, directionIndex, placedCard)
               || battleValues[0] > battleValues[1];
-    }
-    else {
+    } else {
       return battleValues[0] > battleValues[1];
     }
   }
 
-
   private boolean canFlipCardPlus(int row, int col, int directionIndex, Card placedCard) {
-
     // Retrieve the battle values for placed and adjacent cards in the given direction
     int[] battleValues = battleValues(row, col, directionIndex, placedCard);
 
@@ -204,7 +169,7 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
     int nextDirection = nextDir(directionIndex);
     int numSums = 0;
 
-    while(nextDirection != directionIndex) {
+    while (nextDirection != directionIndex) {
       battleValues = battleValues(row, col, directionIndex, placedCard);
       if (battleValues[0] + battleValues[1] == sumToCheck) {
         numSums += 1;
@@ -212,14 +177,15 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
       nextDirection = nextDir(nextDirection);
     }
 
-
-
-    // Determine if the placed card's value is less than the adjacent card's value
-    // THE BIG CHANGE FOR REVERSE RULE:
-    // In original model, this was '>' instead of '>='
     return numSums >= 2;
   }
 
+  /**
+   * Returns the next direction.
+   *
+   * @param dir the current direction
+   * @return the next direction
+   */
   private int nextDir(int dir) {
     switch (dir) {
       case 0:
@@ -231,33 +197,7 @@ public class VariantTwoModel extends ThreeTriosModel implements TriosModel {
       case 3:
         return 0;
       default:
-        throw new IllegalArgumentException("dir is invalid");
+        throw new IllegalArgumentException("direction is invalid");
     }
   }
-
-  public int[] battleValues(int row, int col, int directionIndex, Card placedCard) {
-    int[] adjacentPos = getAdjacentPosition(row, col, directionIndex);
-    int adjacentRow = adjacentPos[0];
-    int adjacentCol = adjacentPos[1];
-
-    if (!isValidPosition(adjacentRow, adjacentCol)) {
-      return new int[]{-1, -1};
-    }
-
-    // Check if adjacent card is flippable
-    Card adjacentCard = getCardAt(adjacentRow, adjacentCol);
-    if (adjacentCard == null || adjacentCard.getOwner() == currentPlayer) {
-      return new int[]{-1, -1};
-    }
-
-
-    // Retrieve the battle values for placed and adjacent cards in the given direction
-    HashMap<String, Integer> placedCardDirections =
-            placedCard.setCardDirections().get(placedCard.getName());
-    HashMap<String, Integer> adjacentCardDirections =
-            adjacentCard.setCardDirections().get(adjacentCard.getName());
-    return getBattleValues(directionIndex, placedCardDirections,
-            adjacentCardDirections);
-  }
-
 }

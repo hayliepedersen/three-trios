@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents a class for testing the variant two model.
+ */
 public class VariantTwoModelTests extends ExamplarThreeTriosModel {
 
   /**
@@ -16,7 +19,7 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
    * tests that it functions properly with same
    * tests that it function properly with plus
    * tests that both can default to the original
-   * tests that plus wont work unless there are at least 2
+   * tests that plus won't work unless there are at least 2
    */
 
   protected VariantTwoModel sameVar;
@@ -68,7 +71,6 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   // testing that it doesn't construct
   @Test
   public void testInvalidConstruction() {
-
     Assert.assertThrows(IllegalArgumentException.class, ()->
             new VariantTwoModel(bigGrid, deck, true, true, new Random(1)));
   }
@@ -78,7 +80,7 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   public void testSameWorks() throws IOException {
     this.init();
 
-    // bvlue = [WindBird, AngryDragon, HeroKnight]
+    // blue = [WindBird, AngryDragon, HeroKnight]
     // red = [WorldDragon, CorruptKing, SkyWhale]
 
     sameVar.placeCard(2, 0, worldDragon);
@@ -93,7 +95,7 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
   public void testSameDefaults() throws IOException {
     this.init();
 
-    // bvlue = [WindBird, AngryDragon, HeroKnight]
+    // blue = [WindBird, AngryDragon, HeroKnight]
     // red = [WorldDragon, CorruptKing, SkyWhale]
 
     sameVar.placeCard(2, 0, corruptKing);
@@ -116,5 +118,4 @@ public class VariantTwoModelTests extends ExamplarThreeTriosModel {
     plusVar.placeCard(1, 1, a);
     Assert.assertEquals(b.getOwner(), Player.BLUE);
   }
-
 }

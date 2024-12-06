@@ -218,7 +218,8 @@ public class ThreeTriosModel implements TriosModel {
    * @param col  the column of the placed card, 0-based index
    * @param card the placed card
    */
-  protected void battlePhase(int row, int col, Card card) throws IOException {
+  protected void battlePhase(int row, int col, Card card)
+          throws IOException {
     List<int[]> flippedCards = new ArrayList<>();
     // Starting with the initially placed card
     flippedCards.add(new int[]{row, col});
@@ -344,14 +345,14 @@ public class ThreeTriosModel implements TriosModel {
    * @return true if the card can be flipped in this direction, false otherwise
    */
   private boolean canFlipCard(int row, int col, int directionIndex, Card placedCard) {
-    int[] battleValues = getValues(row, col, directionIndex, placedCard);
+    int[] battleValues = battleValues(row, col, directionIndex, placedCard);
     if (battleValues == null) return false;
 
     // Determine if the placed card's value is greater than the adjacent card's value
     return battleValues[0] > battleValues[1];
   }
 
-  protected int[] getValues(int row, int col, int directionIndex, Card placedCard) {
+  protected int[] battleValues(int row, int col, int directionIndex, Card placedCard) {
     int[] adjacentPos = getAdjacentPosition(row, col, directionIndex);
     int adjacentRow = adjacentPos[0];
     int adjacentCol = adjacentPos[1];
